@@ -70,38 +70,30 @@ export function Hero() {
       </nav>
 
       <div className={styles.main}>
-        <div className={styles.intro}>
-          <p className="eyebrow" data-hero-fade>
-            {identity.location} — Portfolio {identity.year}
-          </p>
+        <div className={styles.copy}>
+          <div className={styles.intro}>
+            <p className="eyebrow" data-hero-fade>
+              {identity.location} — Portfolio {identity.year}
+            </p>
 
-          <h1 className={`display reveal ${styles.title}`} data-hero-title>
-            <span className="reveal-line">
-              <span>Aadish</span>
-            </span>
-            <span className={`reveal-line ${styles.surname}`}>
-              <span>
-                Gotekar<span className={styles.period}>.</span>
+            <h1 className={`display reveal ${styles.title}`} data-hero-title>
+              <span className="reveal-line">
+                <span>Aadish</span>
               </span>
-            </span>
-          </h1>
-        </div>
+              <span className={`reveal-line ${styles.surname}`}>
+                <span>
+                  Gotekar<span className={styles.period}>.</span>
+                </span>
+              </span>
+            </h1>
+          </div>
 
-        <div className={styles.viz}>
-          <Transformer />
-        </div>
-
-        <div className={styles.details}>
-          <div className={styles.lower}>
+          <div className={styles.details}>
+            <div className={styles.lower}>
             <p className={`serif-italic ${styles.positioning}`} data-hero-fade>
-              {identity.positioning.map((p, i) => (
-                <span key={p}>
+              {identity.positioning.map((p) => (
+                <span key={p} className={styles.positioningLine}>
                   {p}
-                  {i < identity.positioning.length - 1 && (
-                    <span className={styles.dot} aria-hidden="true">
-                      ·
-                    </span>
-                  )}
                 </span>
               ))}
             </p>
@@ -125,9 +117,9 @@ export function Hero() {
                 </div>
               </dl>
             </div>
-          </div>
+            </div>
 
-          <div className={styles.ctas} data-hero-fade>
+            <div className={styles.ctas} data-hero-fade>
             <a href="#work" className={styles.ctaPrimary}>
               <span>Selected work</span>
               <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
@@ -143,7 +135,12 @@ export function Hero() {
             <a href={identity.links.linkedin} target="_blank" rel="noreferrer" className="ulink mono text-xs tracking-[0.18em] uppercase">
               LinkedIn
             </a>
+            </div>
           </div>
+        </div>
+
+        <div className={styles.viz}>
+          <Transformer />
         </div>
       </div>
 

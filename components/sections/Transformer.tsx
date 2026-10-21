@@ -141,7 +141,7 @@ export function Transformer() {
       const layerCount = counts.length;
       lastLayer = layerCount - 1;
 
-      labelBand = Math.max(16, Math.min(24, height * 0.14));
+      labelBand = Math.max(18, Math.min(24, height * 0.16));
       const padX = Math.max(6, width * 0.06);
       const padY = Math.max(4, height * 0.05);
       const innerW = width - padX * 2;
@@ -154,7 +154,7 @@ export function Transformer() {
       for (let l = 0; l < layerCount; l++) {
         const count = counts[l];
         const x = padX + (innerW * l) / Math.max(1, layerCount - 1);
-        layerLabels.push({ x, y: height - 3, text: labels[l] ?? "" });
+        layerLabels.push({ x, y: height - Math.max(8, labelBand * 0.28), text: labels[l] ?? "" });
 
         for (let i = 0; i < count; i++) {
           const t = count === 1 ? 0.5 : i / (count - 1);
@@ -210,20 +210,16 @@ export function Transformer() {
     };
 
     const drawLabels = () => {
-      const fs = Math.max(7.5, Math.min(10, width / 40));
-      ctx.font = `500 ${fs}px 'IBM Plex Mono', ui-monospace, monospace`;
+      const fs = Math.max(9.5, Math.min(12, width / 24));
+      ctx.font = `600 ${fs}px 'IBM Plex Mono', ui-monospace, monospace`;
       ctx.textAlign = "center";
-      ctx.textBaseline = "bottom";
+      ctx.textBaseline = "alphabetic";
+      ctx.fillStyle = colors.ink;
+      ctx.globalAlpha = 1;
       for (const label of layerLabels) {
-        ctx.fillStyle = colors.ink;
-        ctx.globalAlpha = 0.28;
-        ctx.fillText(label.text, label.x, label.y + 0.75);
-        ctx.fillStyle = colors.copper;
-        ctx.globalAlpha = 0.96;
-        ctx.fillText(label.text, label.x, label.y);
+        ctx.fillText(label.text, Math.round(label.x), Math.round(label.y));
       }
       ctx.textAlign = "left";
-      ctx.globalAlpha = 1;
     };
 
     const drawGraph = (live: boolean, now = 0) => {

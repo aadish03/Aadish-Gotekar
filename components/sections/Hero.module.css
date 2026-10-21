@@ -6,7 +6,8 @@
   grid-template-rows: auto 1fr;
   padding: var(--gutter);
   padding-bottom: calc(var(--gutter) + var(--dock-clearance));
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
   isolation: isolate;
 }
 
@@ -34,32 +35,76 @@
   padding: 0;
 }
 
+/* Reference: left column (name high, copy low) + lifecycle viz on the right */
 .main {
   position: relative;
   z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(12rem, 34vw, 34rem);
+  align-items: stretch;
+  column-gap: clamp(1.25rem, 3vw, 2.5rem);
+  flex: 1;
+  min-height: 0;
+  padding-top: clamp(1.5rem, 4vh, 3rem);
+  overflow: visible;
+}
+
+.copy {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  min-height: 0;
-  padding-top: clamp(3rem, 10vh, 7rem);
-  gap: clamp(1.5rem, 3vh, 2.5rem);
+  gap: clamp(1.25rem, 2.5vh, 2rem);
+  min-width: 0;
+  min-height: 100%;
+  align-self: stretch;
+  z-index: 1;
+  overflow: visible;
+  padding-right: clamp(0.5rem, 1.5vw, 1.25rem);
 }
 
-/* Desktop: lifecycle diagram floats over the lower-right of the hero */
+@media (min-width: 760px) {
+  .main {
+    padding-top: 0;
+  }
+
+  .intro {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
+    padding-top: clamp(3.5rem, 15vh, 8.5rem);
+    padding-bottom: 0;
+  }
+
+  .details {
+    flex-shrink: 0;
+  }
+}
+
 .viz {
-  position: absolute;
+  position: relative;
   z-index: 0;
   pointer-events: none;
-  inset: clamp(6%, 8vh, 12%) clamp(1.25rem, 4.5vw, 5rem) clamp(10%, 14vh, 18%) auto;
-  width: clamp(13rem, 44vw, 36rem);
-  max-width: calc(100% - var(--gutter) * 2);
+  align-self: center;
+  width: 100%;
+  height: clamp(16rem, 62vh, 30rem);
+  min-height: 0;
 }
 
 .intro,
 .details {
   position: relative;
-  z-index: 1;
-  max-width: 56rem;
+  min-width: 0;
+}
+
+.intro {
+  max-width: 100%;
+  overflow: visible;
+}
+
+.details {
+  max-width: min(40rem, 100%);
 }
 
 .title {
@@ -73,10 +118,26 @@
   color: var(--parchment);
 }
 
+/* Stroked surname extends past glyph box — beat .reveal > .reveal-line overflow */
+.title:global(.reveal) > :global(.reveal-line).surname {
+  overflow: visible;
+  padding-right: 0.15em;
+}
+
 .surname {
   padding-left: clamp(0.5rem, 8vw, 12rem);
   color: transparent;
   -webkit-text-stroke: 1.25px var(--parchment);
+}
+
+@media (min-width: 760px) and (max-width: 1279px) {
+  .title {
+    font-size: clamp(2.35rem, 5.2vw, 4.75rem);
+  }
+
+  .surname {
+    padding-left: clamp(0.5rem, 5vw, 7rem);
+  }
 }
 
 .period {
@@ -91,17 +152,27 @@
   align-items: end;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1100px) {
   .lower {
     grid-template-columns: 1.1fr 1fr;
     gap: 4rem;
+  }
+
+  .details {
+    max-width: none;
+  }
+}
+
+@media (min-width: 900px) {
+  .viz {
+    height: clamp(18rem, 64vh, 32rem);
   }
 }
 
 @media (max-width: 759px) {
   .hero {
     min-height: auto;
-    overflow: visible;
+    overflow: hidden;
   }
 
   .nav {
@@ -113,20 +184,33 @@
   }
 
   .main {
-    justify-content: flex-start;
+    display: flex;
+    flex-direction: column;
     padding-top: 1.35rem;
-    gap: 1.35rem;
+    gap: 1.25rem;
+  }
+
+  .copy {
+    display: contents;
   }
 
   .viz {
-    position: relative;
-    inset: auto;
+    order: 2;
     width: 100%;
-    max-width: none;
-    margin: 0.15rem 0 0.25rem;
+    height: clamp(10.5rem, 32vw, 13.5rem);
+    margin: 0.25rem 0;
   }
 
   .intro {
+    order: 1;
+    max-width: none;
+  }
+
+  .details {
+    order: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 1.35rem;
     max-width: none;
   }
 
@@ -140,13 +224,6 @@
     padding-left: 0;
     margin-top: 0.06em;
     -webkit-text-stroke-width: 1px;
-  }
-
-  .details {
-    display: flex;
-    flex-direction: column;
-    gap: 1.35rem;
-    max-width: none;
   }
 
   .lower {
@@ -175,16 +252,25 @@
 }
 
 .positioning {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12em;
   font-size: clamp(1.25rem, 2.2vw, 1.75rem);
   color: var(--parchment-dim);
   margin: 0;
-  max-width: 28ch;
+  max-width: 22ch;
+  line-height: 1.35;
 }
 
-.dot {
-  color: var(--copper);
-  margin: 0 0.6em;
-  font-style: normal;
+.positioningLine {
+  display: block;
+  white-space: nowrap;
+}
+
+@media (max-width: 759px) {
+  .positioningLine {
+    white-space: normal;
+  }
 }
 
 .meta {
