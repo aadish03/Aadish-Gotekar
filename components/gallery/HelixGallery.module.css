@@ -1,0 +1,324 @@
+/* ------------------------------------------------------------------ */
+/* Base — static grid (no JS / reduced motion)                          */
+/* ------------------------------------------------------------------ */
+.section {
+  position: relative;
+  padding: clamp(5rem, 12vh, 9rem) var(--gutter);
+  border-top: 1px solid var(--line);
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 50%, var(--verdigris-soft), transparent 70%),
+    var(--ink);
+  overflow: clip;
+}
+
+.header {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 1400px;
+  margin-bottom: clamp(3rem, 7vh, 5rem);
+}
+
+.heading {
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  margin: 0;
+}
+
+.heading em {
+  color: var(--verdigris);
+  font-weight: 300;
+}
+
+.stageWrap {
+  position: relative;
+}
+
+.spindle {
+  display: none;
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  max-width: 1400px;
+}
+
+@media (min-width: 900px) {
+  .stage {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.frame {
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.frameInner {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  background: var(--ink-2);
+  box-shadow:
+    0 30px 60px -30px var(--shadow-ink),
+    inset 0 0 0 1px var(--frame-edge);
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.frameTag {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.5625rem;
+  letter-spacing: 0.2em;
+  background: var(--overlay);
+  color: var(--parchment-dim);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(6px);
+}
+
+.gridCaption {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.gridEvent {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.gridMeta {
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--parchment-mute);
+}
+
+.captionPanel {
+  display: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Enhanced — pinned 3D helix stage                                     */
+/* ------------------------------------------------------------------ */
+.enhanced {
+  height: 100svh;
+  height: 100dvh;
+  padding: 0;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  /* `overflow: clip` on `.section` flattens/clips the 3D helix on small screens */
+  overflow: visible;
+}
+
+.enhanced .header {
+  position: absolute;
+  top: var(--gutter);
+  left: var(--gutter);
+  right: var(--gutter);
+  margin: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* Bottom scrim keeps the live caption legible as frames pass behind it */
+.enhanced::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 38%;
+  background: linear-gradient(to top, var(--ink) 15%, transparent);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.enhanced .heading {
+  font-size: clamp(2rem, 4.5vw, 4rem);
+}
+
+.enhanced .stageWrap {
+  position: absolute;
+  inset: 0;
+  perspective: 1500px;
+  perspective-origin: 50% 45%;
+}
+
+@media (max-width: 759px) {
+  .enhanced .stageWrap {
+    perspective: 900px;
+    perspective-origin: 50% 40%;
+  }
+}
+
+.enhanced .spindle {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 8%;
+  bottom: 8%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--line-strong) 20%, var(--line-strong) 80%, transparent);
+  z-index: 1;
+  transform: translateX(-0.5px);
+}
+
+.enhanced .spindle::before,
+.enhanced .spindle::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid var(--copper);
+  background: var(--ink);
+  transform: translateX(-50%);
+}
+
+.enhanced .spindle::before {
+  top: 0;
+}
+
+.enhanced .spindle::after {
+  bottom: 0;
+}
+
+.enhanced .stage {
+  display: block;
+  position: absolute;
+  inset: 0;
+  max-width: none;
+  transform-style: preserve-3d;
+  z-index: 2;
+}
+
+.enhanced .frame {
+  --fw: clamp(190px, 22vw, 300px);
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: var(--fw);
+  margin: calc(-0.625 * var(--fw)) 0 0 calc(-0.5 * var(--fw));
+  display: block;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+@media (max-width: 759px) {
+  .enhanced .stageWrap {
+    perspective-origin: 50% 38%;
+  }
+
+  .enhanced .frame {
+    --fw: min(46vw, 196px);
+    top: 40%;
+  }
+}
+
+.enhanced .frameInner {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  box-shadow:
+    0 40px 80px -30px var(--shadow-ink),
+    0 0 0 1px var(--frame-edge);
+}
+
+.enhanced .gridCaption {
+  display: none;
+}
+
+.enhanced .captionPanel {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  position: absolute;
+  left: var(--gutter);
+  bottom: var(--gutter);
+  z-index: 4;
+  width: min(34ch, 80vw);
+  pointer-events: none;
+}
+
+@media (min-width: 760px) {
+  .enhanced .captionPanel {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    right: var(--gutter);
+    width: auto;
+  }
+}
+
+.captions {
+  position: relative;
+  min-height: 7.5rem;
+  width: min(34ch, 80vw);
+}
+
+.caption {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: end;
+  gap: 0.4rem;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity var(--dur-base) var(--ease-out-expo),
+    transform var(--dur-base) var(--ease-out-expo);
+}
+
+.caption[data-active] {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 80ms;
+}
+
+.captionYear {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  color: var(--copper);
+}
+
+.captionEvent {
+  font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+  font-weight: 700;
+}
+
+.captionText {
+  color: var(--parchment-dim);
+  font-size: 1rem;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  color: var(--parchment-dim);
+}
+
+.ringSvg {
+  width: 2.5rem;
+  height: 2.5rem;
+  transform: rotate(-90deg);
+}
+
+.progressSep {
+  margin: 0 0.35rem;
+  color: var(--parchment-mute);
+}

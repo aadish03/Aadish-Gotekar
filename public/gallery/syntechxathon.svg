@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#15181c"/><stop offset="1" stop-color="#0a0b0d"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="0.5" cy="0.35" r="0.6">
+    <stop offset="0" stop-color="#c45c26" stop-opacity="0.28"/><stop offset="1" stop-color="#c45c26" stop-opacity="0"/>
+  </radialGradient>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M40 0H0V40" fill="none" stroke="#e8e4dc" stroke-opacity="0.06"/>
+  </pattern>
+</defs>
+<rect width="800" height="1000" fill="url(#bg)"/>
+<rect width="800" height="1000" fill="url(#grid)"/>
+<rect width="800" height="1000" fill="url(#glow)"/>
+<rect x="24" y="24" width="752" height="952" fill="none" stroke="#e8e4dc" stroke-opacity="0.18"/>
+<circle cx="400" cy="400" r="150" fill="none" stroke="#c45c26" stroke-opacity="0.55" stroke-width="1.5"/>
+<circle cx="400" cy="400" r="118" fill="none" stroke="#c45c26" stroke-opacity="0.3" stroke-dasharray="4 8"/>
+<path d="M400 300 L430 380 L515 383 L448 433 L472 515 L400 466 L328 515 L352 433 L285 383 L370 380 Z" fill="#c45c26" fill-opacity="0.9"/>
+<text x="64" y="700" font-family="Helvetica Neue, Arial, sans-serif" font-weight="700" font-size="64" letter-spacing="-2" fill="#e8e4dc">SYNTECH</text>
+<text x="64" y="770" font-family="Helvetica Neue, Arial, sans-serif" font-weight="700" font-size="64" letter-spacing="-2" fill="#e8e4dc" fill-opacity="0.55">XATHON</text>
+<text x="64" y="840" font-family="Menlo, Courier New, monospace" font-size="18" letter-spacing="4" fill="#c45c26">2023 · 100+ TEAMS</text>
+<text x="64" y="920" font-family="Menlo, Courier New, monospace" font-size="13" letter-spacing="3" fill="#e8e4dc" fill-opacity="0.35">PHOTO PLACEHOLDER — REPLACE /gallery/syntechxathon</text>
+<text x="736" y="80" text-anchor="end" font-family="Menlo, Courier New, monospace" font-size="13" letter-spacing="3" fill="#e8e4dc" fill-opacity="0.5">N° 05</text>
+</svg>

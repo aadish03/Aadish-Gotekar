@@ -1,0 +1,116 @@
+.section {
+  padding: clamp(5rem, 14vh, 10rem) var(--gutter) calc(var(--gutter) + var(--dock-clearance));
+  border-top: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 100%, var(--copper-soft), transparent 70%),
+    var(--ink);
+}
+
+.inner {
+  display: grid;
+  gap: clamp(2rem, 5vh, 3.5rem);
+  max-width: 1400px;
+}
+
+.heading {
+  font-size: clamp(2.25rem, 9vw, 9rem);
+  margin: 0;
+}
+
+.heading em {
+  color: var(--copper);
+  font-weight: 300;
+}
+
+.channels {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding-top: clamp(2rem, 5vh, 3rem);
+  border-top: 1px solid var(--line);
+}
+
+@media (min-width: 900px) {
+  .channels {
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 3rem;
+  }
+}
+
+.channel {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+}
+
+.channelLabel {
+  font-size: 0.625rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--parchment-mute);
+}
+
+.channelRow {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.channelValue {
+  font-size: clamp(1.125rem, 1.8vw, 1.5rem);
+  color: var(--parchment);
+}
+
+.social {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.copy {
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--parchment-mute);
+  background: none;
+  border: 1px solid var(--line);
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease-out-expo),
+    border-color var(--dur-fast) var(--ease-out-expo);
+}
+
+.copy:hover,
+.copy:focus-visible {
+  color: var(--copper-hot);
+  border-color: var(--copper);
+}
+
+.colophon {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: clamp(4rem, 12vh, 8rem);
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--parchment-mute);
+  max-width: 1400px;
+}
+
+.colophonMid {
+  display: none;
+}
+
+@media (min-width: 720px) {
+  .colophonMid {
+    display: inline;
+  }
+}

@@ -1,0 +1,14 @@
+.themeDock {
+  position: fixed;
+  right: var(--gutter);
+  bottom: var(--gutter);
+  z-index: 80;
+  /* Sit above the grain overlay so the control stays clickable. */
+  isolation: isolate;
+}
+
+.themeDock :global(button) {
+  background: color-mix(in srgb, var(--ink) 88%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px -18px var(--shadow-ink);
+}

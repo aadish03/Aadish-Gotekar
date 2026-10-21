@@ -1,0 +1,45 @@
+.stage {
+  position: absolute;
+  top: 16%;
+  right: 0;
+  bottom: 32%;
+  width: min(32vw, 380px);
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.38;
+  mask-image: linear-gradient(to right, transparent 0%, #000 18%);
+}
+
+.net {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 1024px) {
+  .stage {
+    width: min(34vw, 300px);
+    top: 14%;
+    bottom: 38%;
+    opacity: 0.32;
+  }
+}
+
+@media (max-width: 759px) {
+  .stage {
+    width: min(48vw, 220px);
+    top: 14%;
+    bottom: auto;
+    height: 38%;
+    right: -6vw;
+    opacity: 0.28;
+  }
+}
+
+@media (max-width: 420px) {
+  .stage {
+    width: 42vw;
+    height: 32%;
+    opacity: 0.22;
+  }
+}

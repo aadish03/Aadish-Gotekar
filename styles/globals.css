@@ -1,0 +1,280 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* Design tokens — "The Helix Ledger"                                  */
+/* ------------------------------------------------------------------ */
+/*
+ * `--ink` is always the page background and `--parchment` the foreground;
+ * the names come from the dark theme but both themes map onto them.
+ * Light is the default; dark is opted into via <html data-theme="dark">.
+ */
+:root {
+  color-scheme: light;
+  --ink: #f2eee6;
+  --ink-2: #e9e4da;
+  --ink-3: #ddd7ca;
+  --line: rgba(21, 23, 26, 0.12);
+  --line-strong: rgba(21, 23, 26, 0.3);
+  --parchment: #15171a;
+  --parchment-dim: rgba(21, 23, 26, 0.68);
+  --parchment-mute: rgba(21, 23, 26, 0.46);
+  --copper: #b4511d;
+  --copper-hot: #c95f27;
+  --copper-soft: rgba(180, 81, 29, 0.14);
+  --verdigris: #2d7a66;
+  --verdigris-soft: rgba(45, 122, 102, 0.14);
+
+  --shadow-ink: rgba(40, 32, 20, 0.35);
+  --frame-edge: rgba(21, 23, 26, 0.06);
+  --overlay: rgba(242, 238, 230, 0.78);
+  --vignette: rgba(60, 45, 25, 0.22);
+  --grain-opacity: 0.08;
+  --grain-blend: multiply;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 220ms;
+  --dur-base: 380ms;
+  --dur-slow: 520ms;
+
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --dock-clearance: 3.75rem;
+  --measure: 62ch;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #0a0b0d;
+  --ink-2: #111316;
+  --ink-3: #1a1d21;
+  --line: rgba(232, 228, 220, 0.12);
+  --line-strong: rgba(232, 228, 220, 0.28);
+  --parchment: #e8e4dc;
+  --parchment-dim: rgba(232, 228, 220, 0.62);
+  --parchment-mute: rgba(232, 228, 220, 0.38);
+  --copper: #c45c26;
+  --copper-hot: #e8783a;
+  --copper-soft: rgba(196, 92, 38, 0.18);
+  --verdigris: #3d8f7a;
+  --verdigris-soft: rgba(61, 143, 122, 0.18);
+
+  --shadow-ink: rgba(0, 0, 0, 0.85);
+  --frame-edge: rgba(232, 228, 220, 0.06);
+  --overlay: rgba(10, 11, 13, 0.7);
+  --vignette: rgba(0, 0, 0, 0.55);
+  --grain-opacity: 0.055;
+  --grain-blend: overlay;
+}
+
+html,
+body,
+[class*="section"],
+[class*="strip"] {
+  transition:
+    background-color var(--dur-slow) var(--ease-out-expo),
+    color var(--dur-slow) var(--ease-out-expo),
+    border-color var(--dur-slow) var(--ease-out-expo);
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-parchment: var(--parchment);
+  --color-copper: var(--copper);
+  --color-copper-hot: var(--copper-hot);
+  --color-verdigris: var(--verdigris);
+  --font-display: var(--font-syne);
+  --font-serif: var(--font-newsreader);
+  --font-mono: var(--font-plex-mono);
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                 */
+/* ------------------------------------------------------------------ */
+html {
+  background: var(--ink);
+  color: var(--parchment);
+  scroll-behavior: auto;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
+}
+
+body {
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  font-feature-settings: "kern", "liga", "onum";
+  overflow-x: clip;
+  position: relative;
+}
+
+::selection {
+  background: var(--copper);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--copper-hot);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Atmosphere — film grain + vignette                                   */
+/* ------------------------------------------------------------------ */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 60;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-shift 1.2s steps(6) infinite;
+  mix-blend-mode: var(--grain-blend);
+}
+
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 59;
+  background: radial-gradient(
+    ellipse 90% 80% at 50% 40%,
+    transparent 55%,
+    var(--vignette) 100%
+  );
+}
+
+@keyframes grain-shift {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -4%); }
+  60% { transform: translate(-4%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ------------------------------------------------------------------ */
+/* Typography utilities                                                 */
+/* ------------------------------------------------------------------ */
+.display {
+  font-family: var(--font-syne), sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+}
+
+.eyebrow {
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--parchment-mute);
+}
+
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 1.5rem;
+  height: 1px;
+  background: var(--copper);
+  vertical-align: middle;
+  margin-right: 0.75rem;
+}
+
+.mono {
+  font-family: var(--font-plex-mono), monospace;
+  font-feature-settings: "tnum", "zero";
+}
+
+.serif-italic {
+  font-family: var(--font-newsreader), serif;
+  font-style: italic;
+  font-weight: 300;
+}
+
+.rule {
+  height: 1px;
+  background: var(--line);
+}
+
+/* Hairline link with copper underline that draws in */
+.ulink {
+  position: relative;
+  display: inline-block;
+}
+.ulink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: var(--copper);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--dur-base) var(--ease-out-expo);
+}
+.ulink:hover::after,
+.ulink:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Reveal primitives driven by GSAP — content is visible without JS   */
+.reveal > .reveal-line {
+  display: block;
+  overflow: hidden;
+}
+.reveal > .reveal-line > span {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* Vertical text used as section markers */
+.vertical {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+/* Scrollbar — unobtrusive copper indicator */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--ink);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ink-3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--copper);
+}
+
+/* ------------------------------------------------------------------ */
+/* Reduced motion                                                       */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .grain::before {
+    animation: none;
+  }
+}

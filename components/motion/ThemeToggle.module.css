@@ -1,0 +1,59 @@
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.3rem 0.6rem 0.3rem 0.3rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--parchment-dim);
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast) var(--ease-out-expo),
+    color var(--dur-fast) var(--ease-out-expo);
+}
+
+.toggle:hover,
+.toggle:focus-visible {
+  border-color: var(--copper);
+  color: var(--parchment);
+}
+
+/* A small "moon phase" disc: full copper sun in light, crescent in dark */
+.disc {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--copper);
+  transition: background var(--dur-base) var(--ease-out-expo);
+}
+
+.disc::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  transform: translateX(100%) scale(0);
+  transition: transform var(--dur-base) var(--ease-spring);
+}
+
+.disc[data-dark]::after {
+  transform: translateX(32%) scale(0.85);
+}
+
+.label {
+  font-size: 0.625rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 599px) {
+  .label {
+    display: none;
+  }
+  .toggle {
+    padding: 0.3rem;
+  }
+}
